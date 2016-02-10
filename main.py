@@ -1,60 +1,68 @@
-from genome import genome
-from utils import utils
+from genome import *
+from utils import *
 
 # Instancier un genome
 individus = []
 
-utils = utils()
-
-
-individus.append(genome())
-individus.append(genome())
-individus.append(genome())
-individus.append(genome())
-individus.append(genome())
+individus.append(Genome())
+individus.append(Genome())
+individus.append(Genome())
+individus.append(Genome())
+individus.append(Genome())
 # tester l'initialisation
-individus = utils.initialisation(individus)
-print("initialisation=%s" % individus)
+individus = initialisation(individus)
+print("\ninitialisation=")
+printIndividus(individus)
+
 
 # tester l'evaluation
-individus = utils.evaluation(individus)
-print("evaluation=%s" % individus)
+individus = evaluation(individus)
+print("\nevaluation=")
+printIndividus(individus)
 
 # tester selection rws
 
 # tester selection tournoi
 parents = []
-parents = utils.selectionneParentsTournoi(individus)
-print("parents=%s" % parents)
+enfants = []
 
-# tester croisement
-enfant = utils.croisement(parents)
-print("enfant=%s" % enfant)
+for i in range(0,5):
+	parents = selectionneParentsTournoi(individus)
+	# tester croisement
+	enfants.append(croisement(parents))
 
-#testion mutation
-mute = []
-mute.append(enfant)
-muted = utils.mutation(mute)
-print("muted=%s" % muted)
+print("\nenfant=")
+printIndividus(enfants)
+
+#tester mutation
+muted = mutation(enfants)
+print("\nmuted=")
+printIndividus(muted)
+
+# tester l'evaluation
+muted = evaluation(muted)
+print("\nevaluation=")
+printIndividus(muted)
 
 '''
 # initialise les individus
-individus = utils.initialisation()
+individus = initialisation()
 # Evalue la population de base
-individusSelection = Selectinutils.evaluation(individus)
+individusSelection = Selectinevaluation(individus)
 
 while(){
 	# Selectionne les parents
-	parents = utils.selectionneParentsRWS(individusSelection)
+	parents = selectionneParentsRWS(individusSelection)
 	enfants = [100]
 
 	for x in xrange(1,100):
 		# Effectue un croisement
-		enfants += utils.croisement()
+		enfants += croisement()
 
 	# Applique une mutation 
-	individus = utils.mutation(enfants)
+	individus = mutation(enfants)
 	# Evalue les individus
-	individusSelection = utils.evaluation(individus)
+	individusSelection = evaluation(individus)
 }
 '''
+
