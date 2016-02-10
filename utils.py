@@ -110,7 +110,7 @@ class utils:
 			individus[i].setA(variationValeur(individus[i].getA()))
 			individus[i].setB(variationValeur(individus[i].getB()))
 			individus[i].setC(variationValeur(individus[i].getC()))
-		return indiv
+		return individus
 
 	def variationValeur(self, valeur, taux=5):
 		variation = randint(-taux, taux)/100

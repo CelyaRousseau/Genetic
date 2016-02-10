@@ -1,7 +1,7 @@
 
 class Genome:
-	 def __new__(self):
-	 	self.A = 1
+	def __new__(self):
+		self.A = 1
 	 	self.B = 1
 	 	self.C = 1
 	 	self.score = 0
@@ -16,7 +16,7 @@ class Genome:
 
  	def display(self):
  		# TODO : implement display
-	
+ 		return 0	
 
 	def setScore(self, score):
 		self.score = score
