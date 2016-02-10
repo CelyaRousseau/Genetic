@@ -1,68 +1,50 @@
 from genome import *
 from utils import *
 
+MODE = "tournoi"
+#MODE = "RWS"
+NBINDIVIDUS = 5
+
 # Instancier un genome
 individus = []
+for i in range(0,NBINDIVIDUS):
+	individus.append(Genome())
 
-individus.append(Genome())
-individus.append(Genome())
-individus.append(Genome())
-individus.append(Genome())
-individus.append(Genome())
 # tester l'initialisation
 individus = initialisation(individus)
-print("\ninitialisation=")
+print("\ninitialisation : ")
 printIndividus(individus)
-
 
 # tester l'evaluation
 individus = evaluation(individus)
-print("\nevaluation=")
+print("\nevaluation : ")
 printIndividus(individus)
 
 # tester selection rws
 
-# tester selection tournoi
+
 parents = []
 enfants = []
-
-for i in range(0,5):
-	parents = selectionneParentsTournoi(individus)
+print("\ncroisement : ")
+for i in range(0,NBINDIVIDUS):
+	if MODE == "tournoi":
+		# tester selection tournoi
+		parents = selectionneParentsTournoi(individus)
+	else:
+		# tester selection rws
+		parents = selectionneParentsRWS(individus)
 	# tester croisement
-	enfants.append(croisement(parents))
-
-print("\nenfant=")
-printIndividus(enfants)
+	enfant = croisement(parents)
+	enfants.append(enfant)
+	printCroisement(parents[0], parents[1], enfant)
 
 #tester mutation
 muted = mutation(enfants)
-print("\nmuted=")
+print("\nmuted : ")
 printIndividus(muted)
 
 # tester l'evaluation
 muted = evaluation(muted)
-print("\nevaluation=")
+print("\nevaluation : ")
 printIndividus(muted)
-
-'''
-# initialise les individus
-individus = initialisation()
-# Evalue la population de base
-individusSelection = Selectinevaluation(individus)
-
-while(){
-	# Selectionne les parents
-	parents = selectionneParentsRWS(individusSelection)
-	enfants = [100]
-
-	for x in xrange(1,100):
-		# Effectue un croisement
-		enfants += croisement()
-
-	# Applique une mutation 
-	individus = mutation(enfants)
-	# Evalue les individus
-	individusSelection = evaluation(individus)
-}
-'''
 

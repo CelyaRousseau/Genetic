@@ -4,6 +4,7 @@ class Genome:
 	B = 1
 	C = 1
 	score = 0
+	nbAttributs = 3
 
 	lowLimitA = 0
 	highLimitA = 10
@@ -36,36 +37,38 @@ class Genome:
 	def getScore(self):
 		return self.score
 
-	def getA(self):
-		return self.A
-
-	def getB(self):
-		return self.B
-
-	def getC(self):
-		return self.C
-
-	def setA(self, A):
-		self.A = A
-
-	def setB(self, B):
-		self.B = B
-
-	def setC(self, C):
-		self.C = C
-
-	def getLowLimit(self, param="A"):
-		if param == "A":
+	# recuperer la limite basse d'un attribut
+	def getLowLimit(self, param="1"):
+		if param == "1":
 			return self.lowLimitA
-		elif param == "B":
+		elif param == "2":
 			return self.lowLimitB
 		else:
 			return self.lowLimitC
 
-	def getHighLimit(self, param="A"):
-		if param == "A":
+	# recuperer la limite haute d'un attribut
+	def getHighLimit(self, param="1"):
+		if param == "1":
 			return self.highLimitA
-		elif param == "B":
+		elif param == "2":
 			return self.highLimitB
 		else:
 			return self.highLimitC
+
+	#recuperer tous les attributs
+	def getAttributs(self):
+		attribs = []
+		attribs.append(self.A)
+		attribs.append(self.B)
+		attribs.append(self.C)
+		return attribs
+
+	# enregistrer tous les attributs
+	def setAttributs(self, attributs):
+		self.A = attributs[0]
+		self.B = attributs[1]
+		self.C = attributs[2]
+
+	# recuperer le nombre d'attributs
+	def getNbAttributs(self):
+		return self.nbAttributs
