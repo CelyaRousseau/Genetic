@@ -9,11 +9,11 @@ class Genome:
 	 	self.nbAttributs = 3
 
 	 	self.lowLimitA = 0
-	 	self.highLimitA = 1
+	 	self.highLimitA = 10
 	 	self.lowLimitB = 0
-	 	self.highLimitB = 1
+	 	self.highLimitB = 10
 	 	self.lowLimitC = 0
-	 	self.highLimitC = 1
+	 	self.highLimitC = 10
 
 
  	def display(self):

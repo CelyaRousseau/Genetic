@@ -45,22 +45,18 @@ def selectionneParentsRWS(parents):
 		sumScore += individu.getScore()
 
 	averageFitness = (float)(sumScore/len(parents))
-	print("averageFitness : %s" %(averageFitness))
 
 	for indiv in parents:
 		fitness = indiv.getScore()*100/sumScore
 		probabiliteCumule+=fitness/sumScore
-		print("probabiliteCumule : %s" %(probabiliteCumule))
 		ListeProbabiliteCumule.append(probabiliteCumule)
 
 	while len(nouveauxParents) != len(parents):
 		prob = random.choice(ListeProbabiliteCumule)
 
 		for i in range(0, len(parents)-1):
-			print("ListeProbabiliteCumule[i-1] : %s" %(ListeProbabiliteCumule[i-1]))
 			if ListeProbabiliteCumule[i-1] < prob <= ListeProbabiliteCumule[i]:
 				nouveauxParents.append(parents[i])
-				print("parent : %s" %(parents[i]))   
 
 	return nouveauxParents
 

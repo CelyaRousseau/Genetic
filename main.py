@@ -6,7 +6,8 @@ MODE = "RWS"
 #MODECROISEMENT = "moyenne"
 MODECROISEMENT = "aleatoire"
 NBINDIVIDUS = 5
-DEBUG = 1
+DEBUG = 0
+SCORE_VOULU = 30
 
 # Instancier un genome
 individus = []
@@ -58,10 +59,11 @@ while j != -1:
 		printIndividus(individus)
 
 	print("\ngeneration %s" %(j-1))
-	printIndicateurs(muted)
-	score = meilleurScore(individus)
+	printIndicateurs(individus)
 
-	if score >= 30:
+	score = meilleurScore(individus)
+	if score >= SCORE_VOULU:
+		printIndividus(individus)
 		j=-1
 
 
