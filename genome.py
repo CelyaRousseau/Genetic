@@ -1,23 +1,12 @@
 
 class Genome:
-	A = 1
-	B = 1
-	C = 1
-	score = 0
-	nbAttributs = 3
 
-	lowLimitA = 0
-	highLimitA = 10
-	lowLimitB = 0
-	highLimitB = 10
-	lowLimitC = 0
-	highLimitC = 10
-
-	def __new__(self):
+	def __init__(self):
 		self.A = 1
 	 	self.B = 1
 	 	self.C = 1
 	 	self.score = 0
+	 	self.nbAttributs = 3
 
 	 	self.lowLimitA = 0
 	 	self.highLimitA = 10

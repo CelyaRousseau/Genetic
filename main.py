@@ -1,9 +1,12 @@
 from genome import *
 from utils import *
 
-MODE = "tournoi"
-#MODE = "RWS"
+#MODE = "tournoi"
+MODE = "RWS"
+#MODECROISEMENT = "moyenne"
+MODECROISEMENT = "aleatoire"
 NBINDIVIDUS = 5
+DEBUG = 1
 
 # Instancier un genome
 individus = []
@@ -17,31 +20,50 @@ printIndividus(individus)
 
 # tester l'evaluation
 individus = evaluation(individus)
-print("\nevaluation : ")
-printIndividus(individus)
+if DEBUG:
+	print("\nevaluation : ")
+	printIndividus(individus)
 
-parents = []
-enfants = []
-print("\ncroisement : ")
-for i in range(0,NBINDIVIDUS):
-	if MODE == "tournoi":
-		# tester selection tournoi
-		parents = selectionneParentsTournoi(individus)
-	else:
-		# tester selection rws
-		parents = selectionneParentsRWS(individus)
-	# tester croisement
-	enfant = croisement(parents)
-	enfants.append(enfant)
-	printCroisement(parents[0], parents[1], enfant)
+j=0
+while j != -1:
+	j+=1
+	parents = []
+	enfants = []
 
-#tester mutation
-muted = mutation(enfants)
-print("\nmuted : ")
-printIndividus(muted)
+	if DEBUG:
+		print("\ncroisement : ")
+	for i in range(0,NBINDIVIDUS):
+		if MODE == "tournoi":
+			# tester selection tournoi
+			parents = selectionneParentsTournoi(individus)
+		else:
+			# tester selection rws
+			parents = selectionneParentsRWS(individus)
+		# tester croisement
+		enfant = croisement(parents, MODECROISEMENT)
+		enfants.append(enfant)
+		if DEBUG:
+			printCroisement(parents[0], parents[1], enfant)
 
-# tester l'evaluation
-muted = evaluation(muted)
-print("\nevaluation : ")
-printIndividus(muted)
+	#tester mutation
+	muted = mutation(enfants)
+	if DEBUG:
+		print("\nmuted : ")
+		printIndividus(muted)
+
+	# tester l'evaluation
+	individus = evaluation(muted)
+	if DEBUG:
+		print("\nevaluation : ")
+		printIndividus(individus)
+
+	print("\ngeneration %s" %(j-1))
+	printIndicateurs(muted)
+	score = meilleurScore(individus)
+
+	if score >= 30:
+		j=-1
+
+
+
 
