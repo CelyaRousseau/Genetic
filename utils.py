@@ -64,30 +64,31 @@ def selectionneParentsRWS(parents):
 # et renvoie un tableau avec les deux individus choisis
 # Methode de selection : tournoi
 def selectionneParentsTournoi(parents):
-	nbParents = len(parents)-1
+	nbParents = len(parents)
 	parentsFinaux = [None, None]
+	parentsSelected = [None, None]
+	randoms = []
 
-	# On effectue 2 tournois pour avoir deux parents
-	for roundTournoi in range(0,2):
-		parentsTournoi = []
-		# Chaque tournoi est compose de 4 individus selectionnes au hasard
-		for i in range(0, 4):
-			parentNb = randint(0,nbParents)
-			if roundTournoi != 0:
-				while parents[parentNb] == parentsFinaux[0]:
-					parentNb = randint(0,nbParents)
-			parentsTournoi.append(parents[parentNb])
-
-		# On effectue le tournoi : le meilleur gagne
-		for i in range(0, 3):
-			if parentsTournoi[i].getScore() > parentsTournoi[i+1].getScore():
-				parentsFinaux[roundTournoi] = parentsTournoi[i]
-
-			elif parentsTournoi[i].getScore() < parentsTournoi[i+1].getScore():
-				parentsFinaux[roundTournoi] = parentsTournoi[i+1]
-
+	# On effectue 2 tournois pour avoir deux lots de parents
+	for roundTournoi in range(0,2):		
+		# on prend 2 parents
+		for i in range(0,2):
+			# si on a un nombre impair d'individus, on clone le dernier
+			if len(randoms) == len(parents)-1:
+				print "no"
+				parentsSelected[i] = parents[len(nbParents)-1]
 			else:
-				parentsFinaux[roundTournoi] = parentsTournoi[i+randint(0,1)]
+				random = randint(0, nbParents-1)
+				while random in randoms:
+					random = randint(0, nbParents-1)
+				print("%s" % random)
+				randoms.append(random)
+				parentsSelected[i] = parents[random]
+
+		if parentsSelected[0].getScore() > parentsSelected[1].getScore():
+			parentsFinaux[roundTournoi] = parentsSelected[0]
+		else:
+			parentsFinaux[roundTournoi] = parentsSelected[1]
 	return parentsFinaux
 
 
