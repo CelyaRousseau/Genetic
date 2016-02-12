@@ -27,7 +27,7 @@ parents = []
 enfants = []
 
 for i in range(0,5):
-	parents = selectionneParentsTournoi(individus)
+	parents = selectionneParentsRWS(individus)
 	# tester croisement
 	enfants.append(croisement(parents))
 

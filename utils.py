@@ -1,4 +1,6 @@
+from __future__ import division
 from random import randint
+import random
 from genome import *
 
 # Initialiser aleatoirement les attributs de plusieurs individus
@@ -30,26 +32,29 @@ def evaluation(individus):
 # et renvoie un tableau avec les deux individus choisis
 # Methode de selection : RWS (roulette)
 def selectionneParentsRWS(parents):
-	a = 0
-# for all members of population
-#     sum += fitness of this individual
-# end for
-    
-# for all members of population
-#     probability = sum of probabilities + (fitness / sum)
-#     sum of probabilities += probability
-# end for
-    
-# loop until new population is full
-#      do this twice
-#          number = Random between 0 and 1
-#        for all members of population
-#            if number > probability but less than next probability 
-#                 then you have been selected
-#        end for
-#      end
-#      create offspring
-# end loop
+	sumScore = 0
+	nouveauxParents = []
+	probabiliteCumule=0
+	ListeProbabiliteCumule=[]
+
+	for individu in parents:
+		sumScore += individu.getScore()
+
+	averageFitness = (float)(sumScore/len(parents))
+
+	for indiv in parents:
+		fitness = indiv.getScore()*100/sumScore
+		probabiliteCumule+=fitness/sumScore
+		ListeProbabiliteCumule.append(probabiliteCumule)
+
+	while len(nouveauxParents) != 2:
+		prob=random.random()
+
+		for i in xrange(len(parents)):
+			if ListeProbabiliteCumule[i-1]<prob<=ListeProbabiliteCumule[i]:
+				nouveauxParents.append(parents[i])     
+
+	return nouveauxParents
 
 # Selectionne deux parents a partir d'un tableau d'individus
 # et renvoie un tableau avec les deux individus choisis
@@ -82,6 +87,7 @@ def selectionneParentsTournoi(parents):
 # Recois un tableau de deux individus et les croise
 # pour retourner un enfant
 def croisement(parents):
+	#add random 50%
 	enfant= Genome()
 	newA = (parents[0].getA() + parents[1].getA())/2
 	newB = (parents[0].getB() + parents[1].getB())/2
