@@ -1,4 +1,5 @@
 from __future__ import division
+from random import randint
 from genome import *
 import time
 import random
@@ -35,37 +36,29 @@ def evaluation(individus):
 # et renvoie un tableau avec les deux individus choisis
 # Methode de selection : RWS (roulette)
 def selectionneParentsRWS(parents):
-	'''
 	sumScore = 0
+	nouveauxParents = []
+	probabiliteCumule=0
+	ListeProbabiliteCumule=[]
+
 	for individu in parents:
 		sumScore += individu.getScore()
 
-	averageFitness = (float)(sumScore/100)
-	print("%s" % (averageFitness))
+	averageFitness = (float)(sumScore/len(parents))
 
-
-	sum_expected_fitness = 0
 	for indiv in parents:
-		sum_expected_fitness = sum_expected_fitness + (indiv.getScore()/averageFitness)
+		fitness = indiv.getScore()*100/sumScore
+		probabiliteCumule+=fitness/sumScore
+		ListeProbabiliteCumule.append(probabiliteCumule)
 
-	print("%s" % (sum_expected_fitness))
+	while len(nouveauxParents) != 2:
+		prob=random.random()
 
-	parents_selected = []
-	while len(parents_selected) != 2:
-		generate = randint(0,sum_expected_fitness)
-		for i in range(0,1):
-			for indiv in parents:
-				if(sum_expected_fitness >= generate):
-					parents_selected[i] += indiv
+		for i in xrange(len(parents)):
+			if ListeProbabiliteCumule[i-1]<prob<=ListeProbabiliteCumule[i]:
+				nouveauxParents.append(parents[i])     
 
-		for (i, individual) in enumerate(population):
-	            if generate <= probs[i]:
-	                new_population.append(individual)
-	                break
-    return new_population
-	return parents_selected
-	'''
-	return 0
+	return nouveauxParents
 
 # Selectionne deux parents a partir d'un tableau d'individus
 # et renvoie un tableau avec les deux individus choisis
@@ -101,7 +94,8 @@ def selectionneParentsTournoi(parents):
 
 # Recois un tableau de deux individus et les croise
 # pour retourner un enfant
-def croisement(parents, mode="moyenne"):
+def croisement(parents):
+	#add random 50%
 	enfant= Genome()
 	newAttributs = []
 
