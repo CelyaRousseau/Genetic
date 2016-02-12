@@ -20,9 +20,6 @@ individus = evaluation(individus)
 print("\nevaluation : ")
 printIndividus(individus)
 
-# tester selection rws
-
-
 parents = []
 enfants = []
 print("\ncroisement : ")

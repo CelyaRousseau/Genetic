@@ -75,13 +75,11 @@ def selectionneParentsTournoi(parents):
 		for i in range(0,2):
 			# si on a un nombre impair d'individus, on clone le dernier
 			if len(randoms) == len(parents)-1:
-				print "no"
 				parentsSelected[i] = parents[len(nbParents)-1]
 			else:
 				random = randint(0, nbParents-1)
 				while random in randoms:
 					random = randint(0, nbParents-1)
-				print("%s" % random)
 				randoms.append(random)
 				parentsSelected[i] = parents[random]
 
@@ -94,7 +92,7 @@ def selectionneParentsTournoi(parents):
 
 # Recois un tableau de deux individus et les croise
 # pour retourner un enfant
-def croisement(parents):
+def croisement(parents, mode="moyenne"):
 	#add random 50%
 	enfant= Genome()
 	newAttributs = []
