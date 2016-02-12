@@ -61,7 +61,7 @@ while j != -1:
 	printIndicateurs(muted)
 	score = meilleurScore(individus)
 
-	if score >= 3:
+	if score >= 30:
 		j=-1
 
 

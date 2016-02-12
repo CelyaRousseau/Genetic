@@ -54,7 +54,7 @@ def selectionneParentsRWS(parents):
 		ListeProbabiliteCumule.append(probabiliteCumule)
 
 	while len(nouveauxParents) != len(parents):
-		prob = random.random()
+		prob = random.choice(ListeProbabiliteCumule)
 
 		for i in range(0, len(parents)-1):
 			print("ListeProbabiliteCumule[i-1] : %s" %(ListeProbabiliteCumule[i-1]))
