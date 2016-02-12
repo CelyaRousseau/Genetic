@@ -45,18 +45,22 @@ def selectionneParentsRWS(parents):
 		sumScore += individu.getScore()
 
 	averageFitness = (float)(sumScore/len(parents))
+	print("averageFitness : %s" %(averageFitness))
 
 	for indiv in parents:
 		fitness = indiv.getScore()*100/sumScore
 		probabiliteCumule+=fitness/sumScore
+		print("probabiliteCumule : %s" %(probabiliteCumule))
 		ListeProbabiliteCumule.append(probabiliteCumule)
 
-	while len(nouveauxParents) != 2:
-		prob=random.random()
+	while len(nouveauxParents) != len(parents):
+		prob = random.random()
 
-		for i in xrange(len(parents)):
-			if ListeProbabiliteCumule[i-1]<prob<=ListeProbabiliteCumule[i]:
-				nouveauxParents.append(parents[i])     
+		for i in range(0, len(parents)-1):
+			print("ListeProbabiliteCumule[i-1] : %s" %(ListeProbabiliteCumule[i-1]))
+			if ListeProbabiliteCumule[i-1] < prob <= ListeProbabiliteCumule[i]:
+				nouveauxParents.append(parents[i])
+				print("parent : %s" %(parents[i]))   
 
 	return nouveauxParents
 
@@ -167,3 +171,35 @@ def randint(min, max):
    	   r = random.randint(min, max)
    	lastRand= r
    	return r
+
+def meilleurScore(individus):
+	score = 0
+	for indiv in individus:
+		individuScore = indiv.getScore()
+		if(individuScore > score):
+			score = individuScore
+
+	return score
+
+def printIndicateurs(individus):
+	individuScore = []
+	for indiv in individus:
+		individuScore.append(indiv.getScore())
+
+	moy = sum(individuScore, 0.0) / len(individuScore)
+	individuScoreCarre = [(indiv-moy)**2 for indiv in individuScore]
+	vari = sum(individuScoreCarre, 0.0) / len(individuScoreCarre)
+	ecart = vari**0.5
+
+	print("moyenne : %s" %(moy))
+	print("variance : %s" %(vari))
+	print("ecart-type : %s" %(ecart))
+	print("meilleur score : %s" %(meilleurScore(individus)))
+
+		
+
+
+
+
+
+
