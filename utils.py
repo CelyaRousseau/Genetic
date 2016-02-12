@@ -1,21 +1,20 @@
 from __future__ import division
 from random import randint
-import random
 from genome import *
+import time
+import random
 
 # Initialiser aleatoirement les attributs de plusieurs individus
 # contenus dans un tableau
 def initialisation(individus):
 
+	nbAttributs = individus[0].getNbAttributs()
 	for i in range(0, len(individus)-1):
-		rand = randint(individus[i].getLowLimit("A"), individus[i].getHighLimit("A"))
-		individus[i].setA(rand)
-
-		rand = randint(individus[i].getLowLimit("B"), individus[i].getHighLimit("B"))
-		individus[i].setB(rand)
-
-		rand = randint(individus[i].getLowLimit("C"), individus[i].getHighLimit("C"))
-		individus[i].setB(rand)
+		attributs = []
+		for j in range(0, nbAttributs):			
+			attributs.append(randint(individus[i].getLowLimit(j), individus[i].getHighLimit(j)))
+			time.sleep(0.05)
+		individus[i].setAttributs(attributs)
 
 	return individus
 
@@ -24,7 +23,12 @@ def initialisation(individus):
 def evaluation(individus):
 	nbIndividus = len(individus)
 	for i in range(0, nbIndividus):
-		total=individus[i].getA() + individus[i].getB() + individus[i].getC()
+		# on recupere tous les attributs
+		attributs = individus[i].getAttributs()
+		total=0
+		# on calcule la somme des attributs : c'est le score de l'evaluation
+		for j in range(0, len(attributs)):
+			total += attributs[j]
 		individus[i].setScore(total)
 	return individus
 
@@ -61,14 +65,18 @@ def selectionneParentsRWS(parents):
 # Methode de selection : tournoi
 def selectionneParentsTournoi(parents):
 	nbParents = len(parents)-1
-	parentsTournoi = []
 	parentsFinaux = [None, None]
 
 	# On effectue 2 tournois pour avoir deux parents
 	for roundTournoi in range(0,2):
+		parentsTournoi = []
 		# Chaque tournoi est compose de 4 individus selectionnes au hasard
 		for i in range(0, 4):
-			parentsTournoi.append(parents[randint(0,nbParents)])
+			parentNb = randint(0,nbParents)
+			if roundTournoi != 0:
+				while parents[parentNb] == parentsFinaux[0]:
+					parentNb = randint(0,nbParents)
+			parentsTournoi.append(parents[parentNb])
 
 		# On effectue le tournoi : le meilleur gagne
 		for i in range(0, 3):
@@ -80,7 +88,6 @@ def selectionneParentsTournoi(parents):
 
 			else:
 				parentsFinaux[roundTournoi] = parentsTournoi[i+randint(0,1)]
-	
 	return parentsFinaux
 
 
@@ -89,36 +96,75 @@ def selectionneParentsTournoi(parents):
 def croisement(parents):
 	#add random 50%
 	enfant= Genome()
-	newA = (parents[0].getA() + parents[1].getA())/2
-	newB = (parents[0].getB() + parents[1].getB())/2
-	newC = (parents[0].getC() + parents[1].getC())/2
-	enfant.setA(newA)
-	enfant.setB(newB)
-	enfant.setC(newC)
+	newAttributs = []
 
+	# ce mode croise les individus en faisant la moyenne de la somme de chaque attributs
+	if mode == "moyenne":		
+		parent1Attributs = parents[0].getAttributs()
+		parent2Attributs = parents[1].getAttributs()
+		for i in range(0, enfant.getNbAttributs()):
+			valeur = (int)((parent1Attributs[i] + parent2Attributs[i])/2)
+			newAttributs.append(valeur)
+	# ce mode recupere aleatoirement l'attribut du parent 1 ou du parent 2
+	else:
+		nbAttributs = enfant.getNbAttributs()
+		random = randint(0, nbAttributs)
+		for i in range(0, nbAttributs):
+			if i <= random:
+				valeur = parents[0].getAttributs()[i]
+			else:
+				valeur = parents[1].getAttributs()[i]
+			newAttributs.append(valeur)
+
+	enfant.setAttributs(newAttributs)
 	return enfant
 
 
 # Modifie les attributs d'un tableau d'individus en fonction d'un
 # taux de mutation passe en parametre (en pourcent)
 def mutation(individus, taux=5):
-	for i in range(0, len(individus)-1):
-		individus[i].setA(variationValeur(individus[i].getA()))
-		individus[i].setB(variationValeur(individus[i].getB()))
-		individus[i].setC(variationValeur(individus[i].getC()))
+	nbAttributs = individus[0].getNbAttributs()
+	# pour chaque attribut on tire un nombre aleatoire compare au taux de mutation
+	# en cas de mutation, on tire au hasard une nouvelle valeur dans les limites de l'attribut en question
+	for i in range(0, len(individus)):
+		for j in range(0, nbAttributs):
+			random = randint(0,100)
+			if random <= taux:
+				attribs = individus[i].getAttributs()
+				attribs[j] = randint(individus[i].getLowLimit(j), individus[i].getHighLimit(j))
+				individus[i].setAttributs(attribs)
 	return individus
 
-def variationValeur(valeur, taux=5):
-	variation = randint(-taux, taux)/100
-	valeur = valeur + valeur*variation
-	return valeur
-
+# afficher un tableau d'individus
 def printIndividus(individus):
-	nbIndiv = len(individus)-1
+	nbIndiv = len(individus)
 	for i in range(0, nbIndiv):
-		print("indiv%s: A=%s, B=%s, C=%s, score=%s" % 
-			(i, individus[i].getA(), individus[i].getB(), individus[i].getC(), individus[i].getScore()))
+		print("indiv%s: Attributs=%s, score=%s" % 
+			(i, individus[i].getAttributs(), individus[i].getScore()))
 
+# afficher un individu
 def printIndividu(individu):
-	print("indiv: A=%s, B=%s, C=%s, score=%s" % 
-		(individu.getA(), individu.getB(), individu.getC(), individu.getScore()))
+	print("indiv: Attributs=%s, score=%s" % 
+			(i, individus[i].getAttributs(), individus[i].getScore()))
+
+# afficher le resultat d'un croisement
+def printCroisement(parent1, parent2, enfant):
+	print("parent1          parent2         enfant")
+	attributs1 = parent1.getAttributs()
+	attributs2 = parent2.getAttributs()
+	attributs3 = enfant.getAttributs()
+	for i in range(0, parent1.getNbAttributs()):
+		print("att%s=%s            att%s=%s          att%s=%s" %(i, attributs1[i], i, attributs2[i], i, attributs3[i]))
+	print("----------------------------------------")
+
+global lastRand
+# tire un nombre aleatoire mais jamais 2 fois le meme a la suite
+def randint(min, max):
+	if not 'lastRand' in globals():
+		lastRand = max+1
+
+	r = random.randint(min, max)
+   	while r == lastRand:
+   	   r = random.randint(min, max)
+   	lastRand= r
+   	return r
